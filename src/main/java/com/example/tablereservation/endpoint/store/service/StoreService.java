@@ -4,6 +4,7 @@ import com.example.tablereservation.domain.store.Store;
 import com.example.tablereservation.domain.user.User;
 import com.example.tablereservation.domain.store.StoreRepository;
 import com.example.tablereservation.domain.user.UserRepository;
+import com.example.tablereservation.domain.user.type.Role;
 import com.example.tablereservation.endpoint.store.dto.StoreCreateRequest;
 import com.example.tablereservation.endpoint.store.dto.StoreResponse;
 import com.example.tablereservation.endpoint.store.dto.StoreUpdateRequest;
@@ -31,7 +32,9 @@ public class StoreService {
         User partner = userRepository.findById(request.getPartnerId())
             .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
 
-        // 역할 검증은 이후에 추가
+        if (partner.getRole() != Role.PARTNER) {
+            throw new IllegalArgumentException("매장은 파트너만 등록할 수 있습니다.");
+        }
 
         Store store = Store.builder()
             .name(request.getName())
@@ -47,8 +50,6 @@ public class StoreService {
 
     /**
      * 매장 수정
-     *
-     *
      */
     @Transactional
     public void updateStore(Long storeId, StoreUpdateRequest request) {
@@ -73,12 +74,11 @@ public class StoreService {
         if (!store.getPartner().getId().equals(partnerId)) {
             throw new RuntimeException("본인의 매장만 삭제할 수 있습니다.");
         }
-
         storeRepository.delete(store);
     }
 
     /**
-     * 매장 단건 조회
+     * 매장 조회
      */
     public StoreResponse getStoreById(Long storeId) {
         Store store = storeRepository.findById(storeId)

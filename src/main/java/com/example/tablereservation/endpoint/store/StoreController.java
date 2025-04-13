@@ -1,14 +1,17 @@
 package com.example.tablereservation.endpoint.store;
 
+import com.example.tablereservation.endpoint.reservation.dto.ReservationResponse;
 import com.example.tablereservation.endpoint.store.dto.StoreCreateRequest;
 import com.example.tablereservation.endpoint.store.dto.StoreResponse;
 import com.example.tablereservation.endpoint.store.dto.StoreUpdateRequest;
 import com.example.tablereservation.endpoint.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -50,10 +53,17 @@ public class StoreController {
         return ResponseEntity.ok(store);
     }
 
+    // 매장 리스트 조회
     @GetMapping
     public ResponseEntity<List<StoreResponse>> getAllStores() {
         List<StoreResponse> stores = storeService.getStoreList();
         return ResponseEntity.ok(stores);
     }
+
+
+/*
+* store의 Detail정 보에서는 예약가능 시간을 데이터를 보내줘서 
+* 프런트에서 그 시간들만 예약 요청 보낼 수 있도록 할 예정.
+* */
 
 }

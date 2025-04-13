@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface StoreRepository extends CrudRepository<Store, Long> {
     List<Store> findAllByOrderByNameAsc();
+
+    void deleteAllInBatch();
 }

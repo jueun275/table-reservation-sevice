@@ -15,24 +15,19 @@ public class StoreResponse {
     private String name;
     private String address;
     private String description;
-    private Double latitude;
-    private Double longitude;
+
 
     @Builder
     public StoreResponse(Long id,
                          Long partnerId,
                          String name,
                          String address,
-                         String description,
-                         Double latitude,
-                         Double longitude) {
+                         String description) {
         this.id = id;
         this.partnerId = partnerId;
         this.name = name;
         this.address = address;
         this.description = description;
-        this.latitude = latitude;
-        this.longitude = longitude;
     }
 
     public static StoreResponse from(Store store) {
@@ -42,8 +37,6 @@ public class StoreResponse {
             .name(store.getName())
             .address(store.getAddress())
             .description(store.getDescription())
-            .latitude(store.getLatitude())
-            .longitude(store.getLongitude())
             .build();
     }
 }

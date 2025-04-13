@@ -5,6 +5,7 @@ import com.example.tablereservation.domain.user.User;
 import com.example.tablereservation.domain.store.StoreRepository;
 import com.example.tablereservation.domain.user.UserRepository;
 import com.example.tablereservation.domain.user.type.Role;
+import com.example.tablereservation.endpoint.reservation.dto.ReservationResponse;
 import com.example.tablereservation.endpoint.store.dto.StoreCreateRequest;
 import com.example.tablereservation.endpoint.store.dto.StoreResponse;
 import com.example.tablereservation.endpoint.store.dto.StoreUpdateRequest;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,14 +38,7 @@ public class StoreService {
             throw new IllegalArgumentException("매장은 파트너만 등록할 수 있습니다.");
         }
 
-        Store store = Store.builder()
-            .name(request.getName())
-            .address(request.getAddress())
-            .description(request.getDescription())
-            .latitude(request.getLatitude())
-            .longitude(request.getLongitude())
-            .partner(partner)
-            .build();
+        Store store = request.toEntity(partner);
 
         return storeRepository.save(store).getId();
     }
@@ -60,7 +55,7 @@ public class StoreService {
             throw new IllegalArgumentException("본인의 매장만 수정할 수 있습니다.");
         }
 
-         store.update(request.getName(), request.getAddress(), request.getDescription());
+//         store.update(request.getName(), request.getAddress(), request.getDescription());
     }
 
     /**
@@ -93,5 +88,16 @@ public class StoreService {
             .map(StoreResponse::from)
             .collect(Collectors.toList());
     }
+
+//    @Transactional(readOnly = true)
+//    public List<ReservationResponse> getDayReservationsByStore(Long storeId, LocalDate date) {
+//        Store store = storeRepository.findById());
+//        return reservationRepository.findDayReservationsByStore(store, date).stream()
+//            .map(ReservationResponse::fromEntity)
+//            .toList();
+//    }
+
+    // 예약 가능한 시간 조회 메서드 추가 예정
+
 }
 

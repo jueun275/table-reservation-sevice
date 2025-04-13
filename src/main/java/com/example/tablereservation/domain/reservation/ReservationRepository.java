@@ -28,7 +28,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
         "WHERE r.store = :store " +
         "AND r.reservationDate = :reservationDate " +
         "AND r.reservationTime = :reservationTime " +
-        "AND r.status = ('REQUESTED', 'APPROVED')")
+        "AND r.status = IN ('REQUESTED', 'APPROVED')")
     long countApprovedReservations(
         @Param("store") Store store,
         @Param("reservationDate") LocalDate reservationDate,

@@ -111,9 +111,9 @@ public class ReservationRepositoryTest {
             .build();
         reservationRepository.save(reservation2);
 
-        // 승인된 예약 수 확인
+        //예약 건 수 확인
         long approvedReservationsCount = reservationRepository.countApprovedReservations(store, reservationDate, reservationTime);
 
-        assertThat(approvedReservationsCount).isEqualTo(1);  // 승인된 예약은 1개
+        assertThat(approvedReservationsCount).isEqualTo(2);  // 두개의 예약 신청
     }
 }

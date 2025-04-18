@@ -54,8 +54,7 @@ public class StoreService {
         if (!store.getPartner().getId().equals(request.getPartnerId())) {
             throw new IllegalArgumentException("본인의 매장만 수정할 수 있습니다.");
         }
-
-//         store.update(request.getName(), request.getAddress(), request.getDescription());
+         store.update(request);
     }
 
     /**

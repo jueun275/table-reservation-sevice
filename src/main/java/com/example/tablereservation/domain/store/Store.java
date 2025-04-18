@@ -2,6 +2,7 @@ package com.example.tablereservation.domain.store;
 
 import com.example.tablereservation.domain.common.BaseTimeEntity;
 import com.example.tablereservation.domain.user.User;
+import com.example.tablereservation.endpoint.store.dto.StoreUpdateRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -67,19 +68,13 @@ public class Store extends BaseTimeEntity {
         this.closeTime = closeTime;
     }
 
-    public void update(String name,
-                       String address,
-                       String description,
-                       Integer unitTime,
-                       Integer availableReservationCount,
-                       LocalTime openTime,
-                       LocalTime closeTime) {
-        this.name = name;
-        this.address = address;
-        this.description = description;
-        this.unitTime = unitTime;
-        this.availableReservationCount = availableReservationCount;
-        this.openTime = openTime;
-        this.closeTime = closeTime;
+    public void update(StoreUpdateRequest dto) {
+        if (dto.getName() != null) this.name = dto.getName();
+        if (dto.getAddress() != null) this.address = dto.getAddress();
+        if (dto.getDescription() != null) this.description = dto.getDescription();
+        if (dto.getUnitTime() != null) this.unitTime = dto.getUnitTime();
+        if (dto.getAvailableReservationCount() != null) this.availableReservationCount = dto.getAvailableReservationCount();
+        if (dto.getOpenTime() != null) this.openTime = dto.getOpenTime();
+        if (dto.getCloseTime() != null) this.closeTime = dto.getCloseTime();
     }
 }

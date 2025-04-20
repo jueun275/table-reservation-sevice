@@ -2,8 +2,6 @@ package com.example.tablereservation.endpoint.review.dto;
 
 import com.example.tablereservation.domain.reservation.Reservation;
 import com.example.tablereservation.domain.review.Review;
-import com.example.tablereservation.domain.store.Store;
-import com.example.tablereservation.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

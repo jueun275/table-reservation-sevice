@@ -3,7 +3,6 @@ package com.example.tablereservation.endpoint.review;
 import com.example.tablereservation.domain.reservation.Reservation;
 import com.example.tablereservation.domain.reservation.ReservationRepository;
 import com.example.tablereservation.domain.reservation.ReservationStatus;
-import com.example.tablereservation.domain.review.Review;
 import com.example.tablereservation.domain.review.ReviewRepository;
 import com.example.tablereservation.domain.store.Store;
 import com.example.tablereservation.domain.store.StoreRepository;
@@ -18,24 +17,15 @@ import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @Transactional

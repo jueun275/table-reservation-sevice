@@ -1,11 +1,11 @@
 package com.example.tablereservation.domain.reservation;
 
-import com.example.tablereservation.global.config.JpaConfig;
 import com.example.tablereservation.domain.store.Store;
 import com.example.tablereservation.domain.store.StoreRepository;
 import com.example.tablereservation.domain.user.User;
 import com.example.tablereservation.domain.user.UserRepository;
 import com.example.tablereservation.domain.user.type.Role;
+import com.example.tablereservation.global.config.JpaConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

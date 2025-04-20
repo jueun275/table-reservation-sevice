@@ -2,7 +2,6 @@ package com.example.tablereservation.domain.review;
 
 import com.example.tablereservation.domain.common.BaseTimeEntity;
 import com.example.tablereservation.domain.reservation.Reservation;
-import com.example.tablereservation.domain.store.Store;
 import com.example.tablereservation.domain.user.User;
 import jakarta.persistence.*;
 import lombok.Builder;

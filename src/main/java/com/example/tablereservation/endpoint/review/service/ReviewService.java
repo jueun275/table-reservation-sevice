@@ -12,7 +12,6 @@ import com.example.tablereservation.endpoint.review.dto.ReviewResponse;
 import com.example.tablereservation.endpoint.review.dto.ReviewUpdateRequest;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.boot.model.naming.IllegalIdentifierException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

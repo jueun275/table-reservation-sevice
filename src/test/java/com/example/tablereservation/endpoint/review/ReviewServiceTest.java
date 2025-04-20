@@ -65,7 +65,7 @@ class ReviewServiceTest {
     void setUp() {
         user = userRepository.save(User.builder()
             .name("유저")
-            .email("user@test.com")
+            .username("user@test.com")
             .password("1234")
             .phoneNumber("010-1111-2222")
             .role(Role.USER)
@@ -73,7 +73,7 @@ class ReviewServiceTest {
 
         partner = userRepository.save(User.builder()
             .name("파트너")
-            .email("partner@test.com")
+            .username("partner@test.com")
             .password("5678")
             .phoneNumber("010-9999-8888")
             .role(Role.PARTNER)
@@ -213,7 +213,7 @@ class ReviewServiceTest {
 
         User otherUser = userRepository.save(User.builder()
             .name("다른유저")
-            .email("other@example.com")
+            .username("other@example.com")
             .password("pass")
             .phoneNumber("010-2222-3333")
             .role(Role.USER)

@@ -6,12 +6,17 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @Table(name = "users")
-public class User extends BaseTimeEntity {
+public class User extends BaseTimeEntity implements  UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +25,7 @@ public class User extends BaseTimeEntity {
     private String name;
 
     @Column(unique = true, nullable = false)
-    private String email;
+    private String username;
 
     private String password;
 
@@ -30,12 +35,30 @@ public class User extends BaseTimeEntity {
     private Role role; // USER, PARTNER
 
     @Builder
-    public User(Long id, String name, String email, String password, String phoneNumber, Role role) {
+    public User(Long id, String name, String username, String password, String phoneNumber, Role role) {
         this.id = id;
         this.name = name;
-        this.email = email;
+        this.username = username;
         this.phoneNumber = phoneNumber;
         this.password = password;
         this.role = role;
     }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(() -> "ROLE_" + role.name());
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+
 }

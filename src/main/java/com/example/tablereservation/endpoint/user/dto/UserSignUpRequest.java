@@ -9,23 +9,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UserSignUpRequest {
-    private String email;
+    private String username;
     private String password;
-    private String confirmPassword;
     private String name;
     private String phoneNumber;
     private String role;
 
     @Builder
-    public UserSignUpRequest(String email,
+    public UserSignUpRequest(String username,
                              String password,
-                             String confirmPassword,
                              String name,
                              String phoneNumber,
                              String role) {
-        this.email = email;
+        this.username = username;
         this.password = password;
-        this.confirmPassword = confirmPassword;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.role = role;

@@ -1,6 +1,6 @@
 package com.example.tablereservation.domain.reservation;
 
-import com.example.tablereservation.config.JpaConfig;
+import com.example.tablereservation.global.config.JpaConfig;
 import com.example.tablereservation.domain.store.Store;
 import com.example.tablereservation.domain.store.StoreRepository;
 import com.example.tablereservation.domain.user.User;
@@ -14,12 +14,9 @@ import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Import(JpaConfig.class)  // Auditing 활성화
@@ -48,7 +45,7 @@ public class ReservationRepositoryTest {
 
         user = User.builder()
             .name("유저")
-            .email("hong@example.com")
+            .username("hong@example.com")
             .password("password")
             .phoneNumber("010-1234-5678")
             .role(Role.USER)
@@ -57,7 +54,7 @@ public class ReservationRepositoryTest {
 
         partnerUser = User.builder()
             .name("파트너")
-            .email("partner@example.com")
+            .username("partner@example.com")
             .password("password")
             .phoneNumber("010-9876-5432")
             .role(Role.PARTNER)

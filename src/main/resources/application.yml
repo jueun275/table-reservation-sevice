@@ -18,3 +18,6 @@ spring:
     url: jdbc:h2:mem:test;
     username: sa
     password:
+
+  jwt:
+    secret: dGFibGUtcmVzZXJ2YXRpb24tc2VydmljZS1taXNzaW9u

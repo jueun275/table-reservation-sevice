@@ -18,7 +18,7 @@ public class UserController {
     private final UserService userService;
 
     // 회원가입
-    @PostMapping("/sign-up")
+    @PostMapping("/signup")
     public ResponseEntity<Long> signUp(@RequestBody UserSignUpRequest request) {
         Long userId =  userService.signUp(request);
 

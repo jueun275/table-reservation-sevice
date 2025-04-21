@@ -27,7 +27,8 @@ public class AuthService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
-        String token = tokenProvider.generateToken(user.getUsername(), user.getRole());
+        String token = tokenProvider.generateToken(user.getId(), user.getUsername(), user.getRole());
+
         return LoginResponse.builder()
             .token(token)
             .username(user.getUsername())

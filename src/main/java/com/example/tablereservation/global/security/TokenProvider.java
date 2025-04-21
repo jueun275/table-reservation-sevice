@@ -24,9 +24,10 @@ public class TokenProvider {
     private String secretKey;
 
     // 토큰 생성
-    public String generateToken(String username, Role role) {
-        Claims claims = Jwts.claims().setSubject(username);
+    public String generateToken(Long userId, String username, Role role) {
+        Claims claims = Jwts.claims().setSubject(String.valueOf(userId));
         claims.put(KEY_ROLE, "ROLE_" + role.name()); //ROLE_ 필수: @PreAuthorize("hasRole('PARTNER')") → 내부적으로 hasAuthority("ROLE_PARTNER") 검사
+        claims.put("username", username);
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + TOKEN_EXPIRE_TIME);
@@ -48,13 +49,17 @@ public class TokenProvider {
             throw new IllegalArgumentException("권한 정보가 없는 토큰입니다.");
         }
 
+        Long userId = Long.valueOf(claims.getSubject());
         var authority = new SimpleGrantedAuthority(role);
-        return new UsernamePasswordAuthenticationToken(claims.getSubject(), "", List.of(authority));
+        return new UsernamePasswordAuthenticationToken(userId, "", List.of(authority));
     }
 
-    // 사용자명 추출
+    public Long getUserId(String token) {
+        return Long.valueOf(parseClaims(token).getSubject()); // userId를 Long으로 반환
+    }
+
     public String getUsername(String token) {
-        return parseClaims(token).getSubject();
+        return parseClaims(token).get("username", String.class);
     }
 
     // 토큰 유효성 검증

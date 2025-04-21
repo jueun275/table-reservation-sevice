@@ -4,6 +4,7 @@ import com.example.tablereservation.global.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -34,6 +35,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // jwt 사용할 것이기 때문에 STATELESS
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(antMatcher("/**/signup"), antMatcher("/**/login")).permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/store/**").permitAll() // store 정보 조회는 앱사용자 모두가 조회 가능 (로그인 제약 X)
                 .anyRequest().authenticated())
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

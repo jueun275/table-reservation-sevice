@@ -56,6 +56,9 @@ public class ReservationService {
         return reservationRepository.save(reservation).getId();
     }
 
+    /*
+    * 요늘의 예약 타임 테이블 확인
+    * */
     @Transactional(readOnly = true)
     public List<ReservationResponse> getDayReservationList(Long storeId, LocalDate reservationDate) {
         Store store = storeRepository.findById(storeId)
@@ -70,7 +73,6 @@ public class ReservationService {
 
     /**
      * 예약 승인
-     * 파트너 검증은 로그인 인증 로직을 완료하면서 넣을 예정입니다
      */
     @Transactional
     public void approveReservation(Long reservationId) {
@@ -81,7 +83,6 @@ public class ReservationService {
 
     /**
      * 예약 거절
-     * 파트너 검증은 로그인 인증 로직을 완료하면서 넣을 예정입니다
      */
     @Transactional
     public void rejectReservation(Long reservationId) {

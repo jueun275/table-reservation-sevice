@@ -6,6 +6,7 @@ import com.example.tablereservation.endpoint.review.dto.ReviewUpdateRequest;
 import com.example.tablereservation.endpoint.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +17,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     // 리뷰 작성
+    @PreAuthorize("hasRole('USER')")
     @PostMapping
     public ResponseEntity<Long> createReview(@RequestBody ReviewCreateRequest request) {
         Long userId = 1L;
@@ -27,7 +29,7 @@ public class ReviewController {
     public ResponseEntity<ReviewResponse> getReview(@PathVariable Long id) {
         return ResponseEntity.ok(reviewService.getReview(id));
     }
-
+    
     // 리뷰 수정
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateReview(

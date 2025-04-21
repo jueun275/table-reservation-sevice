@@ -6,6 +6,7 @@ import com.example.tablereservation.endpoint.reservation.service.ReservationServ
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -18,6 +19,7 @@ public class ReservationController {
 
     private final ReservationService reservationService;
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping
     public ResponseEntity<Long> create(@RequestBody ReservationCreateRequest request) {
         Long id = reservationService.createReservation(request);
@@ -25,12 +27,14 @@ public class ReservationController {
         return ResponseEntity.ok(id);
     }
 
+    @PreAuthorize("hasRole('PARTNER')")
     @PatchMapping("/{id}/approve")
     public ResponseEntity<Void> approve(@PathVariable Long id) {
         reservationService.approveReservation(id);
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasRole('PARTNER')")
     @PatchMapping("/{id}/reject")
     public ResponseEntity<Void> reject(@PathVariable Long id) {
         reservationService.rejectReservation(id);
@@ -46,6 +50,7 @@ public class ReservationController {
     /**
      * 점주의 매장 예약 정보 조회 (특정 날짜 기준)
      */
+    @PreAuthorize("hasRole('PARTNER')")
     @GetMapping("/store/{storeId}")
     public ResponseEntity<List<ReservationResponse>> getDayReservationsByStore(
         @PathVariable Long storeId,

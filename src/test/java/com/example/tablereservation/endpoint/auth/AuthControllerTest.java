@@ -1,6 +1,7 @@
 package com.example.tablereservation.endpoint.auth;
 
 import com.example.tablereservation.domain.user.UserRepository;
+import com.example.tablereservation.domain.user.type.Role;
 import com.example.tablereservation.endpoint.auth.dto.LoginRequest;
 import com.example.tablereservation.endpoint.user.dto.UserSignUpRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,10 +17,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.hamcrest.core.StringContains.containsString;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,10 +40,10 @@ class AuthControllerTest {
 
     @BeforeEach
     void setUp() {
-        userRepository.deleteAll();
+        userRepository.deleteAll(); // 테스트 간 영향 방지
     }
 
-    @DisplayName("회원가입 후 로그인 통합테스트 - 성공")
+    @DisplayName("회원가입,로그인,jwt 발급, @LoginUser 통합테스트 - 성공")
     @Test
     void signupAndLogin_success() throws Exception {
         // given
@@ -80,6 +83,13 @@ class AuthControllerTest {
         // then
         assertThat(token).isNotBlank();
 
+
+        // 3. @LoginUser Test (Authorization 토큰 잘 파싱하는지)
+        mockMvc.perform(get("/api/user")
+                .header("Authorization", "Bearer " + token))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.username").value("test@test.com"));
     }
 
 }

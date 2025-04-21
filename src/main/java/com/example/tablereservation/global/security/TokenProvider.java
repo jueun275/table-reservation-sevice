@@ -18,7 +18,7 @@ import java.util.List;
 public class TokenProvider {
 
     private static final long TOKEN_EXPIRE_TIME = 1000 * 60 * 60; // 1시간
-    private static final String KEY_ROLE = "role"; // 단일 권한용 키
+    private static final String KEY_ROLE = "role";
 
     @Value("${spring.jwt.secret}")
     private String secretKey;
@@ -26,7 +26,7 @@ public class TokenProvider {
     // 토큰 생성
     public String generateToken(String username, Role role) {
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put(KEY_ROLE, role.name()); // "ROLE_USER", "ROLE_PARTNER"
+        claims.put(KEY_ROLE, "ROLE_" + role.name()); //ROLE_ 필수: @PreAuthorize("hasRole('PARTNER')") → 내부적으로 hasAuthority("ROLE_PARTNER") 검사
 
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + TOKEN_EXPIRE_TIME);

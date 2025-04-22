@@ -14,7 +14,6 @@ import java.time.LocalTime;
 @Getter
 @NoArgsConstructor
 public class ReservationCreateRequest {
-    private Long userId;
     private Long storeId;
     private LocalDate reservationDate;
     private LocalTime reservationTime;
@@ -22,12 +21,10 @@ public class ReservationCreateRequest {
 
     @Builder
     public ReservationCreateRequest(Long storeId,
-                                    Long userId,
                                     LocalDate reservationDate,
                                     LocalTime reservationTime,
                                     String phoneNumber) {
         this.storeId = storeId;
-        this.userId = userId;
         this.reservationDate = reservationDate;
         this.reservationTime = reservationTime;
         this.phoneNumber = phoneNumber;

@@ -14,7 +14,6 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 public class StoreCreateRequest {
-    private Long partnerId;
     private String name;
     private String address;
     private String description;
@@ -26,8 +25,7 @@ public class StoreCreateRequest {
     private LocalTime closeTime;
 
     @Builder
-    public StoreCreateRequest(Long partnerId,
-                              String name,
+    public StoreCreateRequest(String name,
                               String address,
                               String description,
                               Double latitude,
@@ -36,7 +34,6 @@ public class StoreCreateRequest {
                               Integer availableReservationCount,
                               LocalTime openTime,
                               LocalTime closeTime) {
-        this.partnerId = partnerId;
         this.name = name;
         this.address = address;
         this.description = description;

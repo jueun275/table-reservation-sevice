@@ -5,6 +5,7 @@ import com.example.tablereservation.endpoint.store.dto.StoreCreateRequest;
 import com.example.tablereservation.endpoint.store.dto.StoreResponse;
 import com.example.tablereservation.endpoint.store.dto.StoreUpdateRequest;
 import com.example.tablereservation.endpoint.store.service.StoreService;
+import com.example.tablereservation.global.security.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,9 @@ public class StoreController {
     // 매장 등록 - 파트너만 가능
     @PreAuthorize("hasRole('PARTNER')")
     @PostMapping
-    public ResponseEntity<Long> createStore(@RequestBody StoreCreateRequest request) {
-        Long storeId = storeService.createStore(request);
+    public ResponseEntity<Long> createStore(@RequestBody StoreCreateRequest request,
+                                            @LoginUser Long partnerId) {
+        Long storeId = storeService.createStore(request, partnerId);
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .body(storeId);
@@ -36,8 +38,9 @@ public class StoreController {
     @PreAuthorize("hasRole('PARTNER')")
     @PutMapping("/{storeId}")
     public ResponseEntity<Void> updateStore(@PathVariable Long storeId,
+                                            @LoginUser Long partnerId,
                                             @RequestBody StoreUpdateRequest request) {
-        storeService.updateStore(storeId, request);
+        storeService.updateStore(storeId, partnerId, request);
         return ResponseEntity.noContent().build();
     }
 
@@ -45,7 +48,7 @@ public class StoreController {
     @PreAuthorize("hasRole('PARTNER')")
     @DeleteMapping("/{storeId}")
     public ResponseEntity<Void> deleteStore(@PathVariable Long storeId,
-                                            @RequestParam Long userId) {
+                                            @LoginUser Long userId) {
         storeService.deleteStore(storeId, userId);
         return ResponseEntity.noContent().build(); // 204
     }

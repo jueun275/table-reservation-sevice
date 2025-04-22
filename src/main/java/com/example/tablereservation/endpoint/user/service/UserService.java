@@ -55,4 +55,20 @@ public class UserService {
         return userRepository.save(user).getId();
     }
 
+    public UserResponse getUserInfo(Long userId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new EntityNotFoundException("유저를 찾을 수 없습니다"));
+
+        List<Review> reviews = reviewRepository.findAllByUserId(userId);
+        List<Reservation> reservations = reservationRepository.findAllByUserId(userId);
+
+        return new UserResponse(
+            user.getUsername(),
+            user.getName(),
+            user.getPhoneNumber(),
+            reviews.stream().map(ReviewResponse::fromEntity).toList(),
+            reservations.stream().map(ReservationResponse::fromEntity).toList()
+        );
+    }
+
 }

@@ -156,7 +156,6 @@ class ReviewServiceTest {
         // given
         ReviewCreateRequest createRequest = ReviewCreateRequest.builder()
             .reservationId(reservation.getId())
-            .userId(user.getId())
             .comment("맛있어요!")
             .rating(5)
             .build();

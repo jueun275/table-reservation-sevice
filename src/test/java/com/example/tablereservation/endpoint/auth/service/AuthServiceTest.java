@@ -36,11 +36,13 @@ class AuthServiceTest {
 
     @Test
     void login_success() {
+        Long userId = 1L;
         String username = "test@test.com";
         String rawPassword = "1234";
         String encodedPassword = "암호화된1234";
 
         User user = User.builder()
+            .id(userId)
             .username(username)
             .password(encodedPassword)
             .role(Role.USER)
@@ -48,7 +50,7 @@ class AuthServiceTest {
 
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
         when(passwordEncoder.matches(rawPassword, encodedPassword)).thenReturn(true);
-        when(tokenProvider.generateToken(1L, username, Role.USER)).thenReturn("JWT-TOKEN");
+        when(tokenProvider.generateToken(userId, username, Role.USER)).thenReturn("JWT-TOKEN");
 
         LoginResponse response = authService.login(new LoginRequest(username, rawPassword));
 

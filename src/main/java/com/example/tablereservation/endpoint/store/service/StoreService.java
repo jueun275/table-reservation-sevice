@@ -1,11 +1,10 @@
 package com.example.tablereservation.endpoint.store.service;
 
 import com.example.tablereservation.domain.store.Store;
-import com.example.tablereservation.domain.user.User;
 import com.example.tablereservation.domain.store.StoreRepository;
+import com.example.tablereservation.domain.user.User;
 import com.example.tablereservation.domain.user.UserRepository;
 import com.example.tablereservation.domain.user.type.Role;
-import com.example.tablereservation.endpoint.reservation.dto.ReservationResponse;
 import com.example.tablereservation.endpoint.store.dto.StoreCreateRequest;
 import com.example.tablereservation.endpoint.store.dto.StoreResponse;
 import com.example.tablereservation.endpoint.store.dto.StoreUpdateRequest;
@@ -14,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,8 +28,8 @@ public class StoreService {
      * 매장 등록
      */
     @Transactional
-    public Long createStore(StoreCreateRequest request) {
-        User partner = userRepository.findById(request.getPartnerId())
+    public Long createStore(StoreCreateRequest request, Long partnerId) {
+        User partner = userRepository.findById(partnerId)
             .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 유저입니다."));
 
         if (partner.getRole() != Role.PARTNER) {
@@ -47,11 +45,11 @@ public class StoreService {
      * 매장 수정
      */
     @Transactional
-    public void updateStore(Long storeId, StoreUpdateRequest request) {
+    public void updateStore(Long storeId,Long partnerId, StoreUpdateRequest request) {
         Store store = storeRepository.findById(storeId)
             .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 매장입니다."));
 
-        if (!store.getPartner().getId().equals(request.getPartnerId())) {
+        if (!store.getPartner().getId().equals(partnerId)) {
             throw new IllegalArgumentException("본인의 매장만 수정할 수 있습니다.");
         }
          store.update(request);

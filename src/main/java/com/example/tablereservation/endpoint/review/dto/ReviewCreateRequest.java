@@ -9,14 +9,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ReviewCreateRequest {
-    private Long userId;
     private Long reservationId;
     private String comment;
     private int rating;
 
     @Builder
-    public ReviewCreateRequest(Long userId, Long reservationId, String comment, int rating) {
-        this.userId = userId;
+    public ReviewCreateRequest(Long reservationId, String comment, int rating) {
         this.reservationId = reservationId;
         this.comment = comment;
         this.rating = rating;

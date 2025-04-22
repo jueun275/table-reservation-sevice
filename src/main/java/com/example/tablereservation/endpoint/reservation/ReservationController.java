@@ -3,6 +3,7 @@ package com.example.tablereservation.endpoint.reservation;
 import com.example.tablereservation.endpoint.reservation.dto.ReservationCreateRequest;
 import com.example.tablereservation.endpoint.reservation.dto.ReservationResponse;
 import com.example.tablereservation.endpoint.reservation.service.ReservationService;
+import com.example.tablereservation.global.security.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,9 @@ public class ReservationController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping
-    public ResponseEntity<Long> create(@RequestBody ReservationCreateRequest request) {
-        Long id = reservationService.createReservation(request);
+    public ResponseEntity<Long> create(@RequestBody ReservationCreateRequest request,
+                                       @LoginUser Long userId ) {
+        Long id = reservationService.createReservation(request, userId);
 
         return ResponseEntity.ok(id);
     }

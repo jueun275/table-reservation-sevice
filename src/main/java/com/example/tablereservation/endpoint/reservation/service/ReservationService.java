@@ -9,6 +9,7 @@ import com.example.tablereservation.domain.user.User;
 import com.example.tablereservation.domain.user.UserRepository;
 import com.example.tablereservation.endpoint.reservation.dto.ReservationCreateRequest;
 import com.example.tablereservation.endpoint.reservation.dto.ReservationResponse;
+import com.example.tablereservation.global.security.LoginUser;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,8 +33,8 @@ public class ReservationService {
      * 예약 생성
      */
     @Transactional
-    public Long createReservation(ReservationCreateRequest request) {
-        User user = userRepository.findById(request.getUserId())
+    public Long createReservation(ReservationCreateRequest request, @LoginUser Long userId) {
+        User user = userRepository.findById(userId)
             .orElseThrow(() -> new EntityNotFoundException("해당 유저가 존재하지 않습니다"));
         Store store = storeRepository.findById(request.getStoreId())
             .orElseThrow(() -> new EntityNotFoundException("가게를 찾을 수 없습니다."));

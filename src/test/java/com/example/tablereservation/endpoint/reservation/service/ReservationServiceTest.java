@@ -49,8 +49,9 @@ class ReservationServiceTest {
     @Test
     void createReservation_success() {
         // given
+        Long userId = 1L;
         User user = User.builder()
-            .id(1L)
+            .id(userId)
             .name("Test User")
             .build();
 
@@ -64,7 +65,6 @@ class ReservationServiceTest {
             .build();
 
         ReservationCreateRequest request = ReservationCreateRequest.builder()
-            .userId(1L)
             .storeId(1L)
             .reservationDate(LocalDate.now())
             .reservationTime(LocalTime.of(14, 0))
@@ -87,7 +87,7 @@ class ReservationServiceTest {
         ArgumentCaptor<Reservation> captor = ArgumentCaptor.forClass(Reservation.class);
 
         // when
-        Long reservationId = reservationService.createReservation(request);
+        Long reservationId = reservationService.createReservation(request, userId);
 
         // then
         verify(reservationRepository).save(captor.capture());
@@ -104,8 +104,9 @@ class ReservationServiceTest {
     @Test
     void createReservation_fail_userNotFound() {
         // given
+        Long userId = 1L;
+
         ReservationCreateRequest request = ReservationCreateRequest.builder()
-            .userId(1L)
             .storeId(1L)
             .reservationDate(LocalDate.now())
             .reservationTime(LocalTime.of(14, 0))
@@ -115,7 +116,7 @@ class ReservationServiceTest {
         given(userRepository.findById(1L)).willReturn(Optional.empty());
 
         // when & then
-        assertThatThrownBy(() -> reservationService.createReservation(request))
+        assertThatThrownBy(() -> reservationService.createReservation(request, userId))
             .isInstanceOf(EntityNotFoundException.class)
             .hasMessage("해당 유저가 존재하지 않습니다");
 
@@ -126,9 +127,13 @@ class ReservationServiceTest {
     @Test
     void createReservation_fail_storeNotFound() {
         // given
-        User user = User.builder().id(1L).build();
+        Long userId = 1L;
+
+        User user = User.builder()
+            .id(userId)
+            .build();
+
         ReservationCreateRequest request = ReservationCreateRequest.builder()
-            .userId(1L)
             .storeId(1L)
             .reservationDate(LocalDate.now())
             .reservationTime(LocalTime.of(14, 0))
@@ -139,7 +144,7 @@ class ReservationServiceTest {
         given(storeRepository.findById(1L)).willReturn(Optional.empty());
 
         // when & then
-        assertThatThrownBy(() -> reservationService.createReservation(request))
+        assertThatThrownBy(() -> reservationService.createReservation(request, userId))
             .isInstanceOf(EntityNotFoundException.class)
             .hasMessage("가게를 찾을 수 없습니다.");
 

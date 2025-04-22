@@ -49,7 +49,6 @@ class StoreServiceTest {
             .build();
 
         StoreCreateRequest request = StoreCreateRequest.builder()
-            .partnerId(1L)
             .name("테스트 매장")
             .address("서울")
             .description("테스트용 매장입니다")
@@ -69,7 +68,7 @@ class StoreServiceTest {
         ArgumentCaptor<Store> captor = ArgumentCaptor.forClass(Store.class);
 
         // when
-        Long storeId = storeService.createStore(request);
+        Long storeId = storeService.createStore(request, partner.getId());
 
         // then
         verify(storeRepository).save(captor.capture());
@@ -94,7 +93,6 @@ class StoreServiceTest {
             .build();
 
         StoreCreateRequest request = StoreCreateRequest.builder()
-            .partnerId(userId)
             .name("맛집")
             .address("서울시 마포구")
             .description("일반 유저가 등록 시도")
@@ -103,7 +101,7 @@ class StoreServiceTest {
         given(userRepository.findById(userId)).willReturn(Optional.of(user));
 
         // when & then
-        assertThatThrownBy(() -> storeService.createStore(request))
+        assertThatThrownBy(() -> storeService.createStore(request, userId))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("매장은 파트너만 등록할 수 있습니다.");
 
@@ -114,8 +112,9 @@ class StoreServiceTest {
     @DisplayName("매장 수정 성공")
     void updateStore_success() {
         // given
+        Long partnerId = 1L;
         User partner = User.builder()
-            .id(1L)
+            .id(partnerId)
             .build();
 
         Store store = Store.builder()
@@ -126,7 +125,6 @@ class StoreServiceTest {
             .build();
 
         StoreUpdateRequest request = StoreUpdateRequest.builder()
-            .partnerId(1L)
             .name("변경된 매장이름")
             .address("변경된 주소")
             .description("변경되었습니다")
@@ -135,7 +133,7 @@ class StoreServiceTest {
         given(storeRepository.findById(1L)).willReturn(Optional.of(store));
 
         // when
-        storeService.updateStore(1L, request);
+        storeService.updateStore(1L, partnerId, request);
 
         // then
         assertThat(store.getName()).isEqualTo("변경된 매장이름");
@@ -146,9 +144,12 @@ class StoreServiceTest {
     @Test
     @DisplayName("매장 삭제 성공")
     void deleteStore_success() {
+
         // given
+        Long partnerId = 1L;
+
         User partner = User.builder()
-            .id(1L)
+            .id(partnerId)
             .build();
 
         Store store = Store.builder()
@@ -161,7 +162,7 @@ class StoreServiceTest {
         given(storeRepository.findById(1L)).willReturn(Optional.of(store));
 
         // when
-        storeService.deleteStore(1L, 1L);
+        storeService.deleteStore(partnerId, 1L);
 
         // then
         verify(storeRepository).delete(store);

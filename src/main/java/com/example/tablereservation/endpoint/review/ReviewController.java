@@ -4,6 +4,7 @@ import com.example.tablereservation.endpoint.review.dto.ReviewCreateRequest;
 import com.example.tablereservation.endpoint.review.dto.ReviewResponse;
 import com.example.tablereservation.endpoint.review.dto.ReviewUpdateRequest;
 import com.example.tablereservation.endpoint.review.service.ReviewService;
+import com.example.tablereservation.global.security.LoginUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,8 +20,8 @@ public class ReviewController {
     // 리뷰 작성
     @PreAuthorize("hasRole('USER')")
     @PostMapping
-    public ResponseEntity<Long> createReview(@RequestBody ReviewCreateRequest request) {
-        Long userId = 1L;
+    public ResponseEntity<Long> createReview(@RequestBody ReviewCreateRequest request,
+                                             @LoginUser Long userId) {
         return ResponseEntity.ok(reviewService.createReview(request, userId));
     }
 
@@ -29,22 +30,21 @@ public class ReviewController {
     public ResponseEntity<ReviewResponse> getReview(@PathVariable Long id) {
         return ResponseEntity.ok(reviewService.getReview(id));
     }
-    
+
     // 리뷰 수정
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateReview(
-        @PathVariable Long id,
-        @RequestBody ReviewUpdateRequest request) {
+    public ResponseEntity<Void> updateReview(@PathVariable Long id,
+                                             @LoginUser Long userId,
+                                             @RequestBody ReviewUpdateRequest request) {
 
-        Long userId = 1L;
         reviewService.updateReview(id, userId, request);
         return ResponseEntity.ok().build();
     }
 
     // 리뷰 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
-        Long userId = 1L;
+    public ResponseEntity<Void> deleteReview(@PathVariable Long id,
+                                             @LoginUser Long userId) {
         reviewService.deleteReview(id, userId);
         return ResponseEntity.ok().build();
     }

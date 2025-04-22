@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<UserResponse> getAllUsers(@LoginUser Long userId) {
+    public ResponseEntity<UserResponse> getUserInfo(@LoginUser Long userId) {
         UserResponse response = userService.getUserInfo(userId);
         return ResponseEntity.ok(response);
     }
